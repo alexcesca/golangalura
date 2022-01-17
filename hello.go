@@ -2,38 +2,16 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"os"
 )
 
 func main() {
-	nome := "alex"
-	versao := 1.1
+	exibeintroducao()
+	exibeMenu()
 
-	fmt.Println("Ola, Sr. ", nome)
-	fmt.Println("Este programa esta na versão ", versao)
-
-	fmt.Println("1 - Iniciar monitoramento")
-	fmt.Println("2 - Exibir logs")
-	fmt.Println("0 - Sair do programa")
-
-	var comando int
-	_, err := fmt.Scan(&comando)
-
+	comando, err := leComando()
 	if err != nil {
 		fmt.Println("Opção invalida ", comando)
-		log.Fatal(err.Error())
-	}
-
-	if comando == 1 {
-		fmt.Println("Monitorando ...")
-
-	} else if comando == 2 {
-		fmt.Println("Exibindo logs..")
-
-	} else if comando == 0 {
-		fmt.Println("Saindo do programa...")
-	} else {
-		fmt.Println("Comando não conhecido")
 	}
 
 	switch comando {
@@ -43,8 +21,34 @@ func main() {
 		fmt.Println("Exibindo logs..")
 	case 0:
 		fmt.Println("Saindo do programa...")
+		os.Exit(0)
 	default:
 		fmt.Println("Comando não conhecido")
+		os.Exit(-1)
 	}
+}
 
+func exibeintroducao() {
+	nome := "Alex"
+	versao := 1.1
+
+	fmt.Println("Ola, Sr. ", nome)
+	fmt.Println("Este programa esta na versão ", versao)
+}
+
+func leComando() (int, error) {
+	var comando int
+	_, err := fmt.Scan(&comando)
+
+	if err != nil {
+		fmt.Println("Opção invalida ", comando)
+		return 0, err
+	}
+	return comando, nil
+}
+
+func exibeMenu() {
+	fmt.Println("1 - Iniciar monitoramento")
+	fmt.Println("2 - Exibir logs")
+	fmt.Println("0 - Sair do programa")
 }
