@@ -57,7 +57,7 @@ func exibeMenu() {
 }
 func iniciarMonitoramento() {
 	fmt.Println("Monitorando ...")
-	site := "https://www.alura.com.br"
+	site := "https://random-status-code.herokuapp.com"
 	retorno, err := http.Get(site)
 	if err != nil {
 		fmt.Printf("Site %v OffLine. Status code %v", site, retorno.Status)
