@@ -57,14 +57,20 @@ func exibeMenu() {
 }
 func iniciarMonitoramento() {
 	fmt.Println("Monitorando ...")
-	site := "https://random-status-code.herokuapp.com"
-	retorno, err := http.Get(site)
-	if err != nil {
-		fmt.Printf("Site %v OffLine. Status code %v", site, retorno.Status)
+	//site := "https://random-status-code.herokuapp.com"
+	sites := []string{"https://random-status-code.herokuapp.com", "https://www.alura.com.br", "https://www.google.com"}
+
+	for _, site := range sites {
+
+		retorno, err := http.Get(site)
+		if err != nil {
+			fmt.Printf("Site %v OffLine. Status code %v \n", site, retorno.Status)
+		}
+		if retorno.StatusCode == 200 {
+			fmt.Printf("Site %v Online \n", site)
+		} else {
+			fmt.Printf("Site %v OffLine. Status code %v\n", site, retorno.Status)
+		}
 	}
-	if retorno.StatusCode == 200 {
-		fmt.Printf("Site %v Online ", site)
-	} else {
-		fmt.Printf("Site %v OffLine. Status code %v", site, retorno.Status)
-	}
+
 }
