@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 )
+
+const monitoramentos = 3
+const delay = 5
 
 func main() {
 	exibeintroducao()
@@ -57,20 +61,25 @@ func exibeMenu() {
 }
 func iniciarMonitoramento() {
 	fmt.Println("Monitorando ...")
-	//site := "https://random-status-code.herokuapp.com"
-	sites := []string{"https://random-status-code.herokuapp.com", "https://www.alura.com.br", "https://www.google.com"}
-
-	for _, site := range sites {
-
-		retorno, err := http.Get(site)
-		if err != nil {
-			fmt.Printf("Site %v OffLine. Status code %v \n", site, retorno.Status)
+	sites := []string{"https://random-status-code.herokuapp.com", "https://www.alura.com.br", "https://auroraalimentos.com.br/"}
+	for i := 0; i < monitoramentos; i++ {
+		for _, site := range sites {
+			testaSite(site)
 		}
-		if retorno.StatusCode == 200 {
-			fmt.Printf("Site %v Online \n", site)
-		} else {
-			fmt.Printf("Site %v OffLine. Status code %v\n", site, retorno.Status)
-		}
+		// função de time para parar 5 segundos.
+		time.Sleep(delay * time.Second)
 	}
 
+	fmt.Println("")
+}
+func testaSite(site string) {
+	retorno, err := http.Get(site)
+	if err != nil {
+		fmt.Printf("Site %v OffLine. Status code %v \n", site, retorno.Status)
+	}
+	if retorno.StatusCode == 200 {
+		fmt.Printf("Site %v Online \n", site)
+	} else {
+		fmt.Printf("Site %v OffLine. Status code %v\n", site, retorno.Status)
+	}
 }
