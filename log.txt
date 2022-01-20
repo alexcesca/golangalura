@@ -1,0 +1,12 @@
+20/01/2022 01:12:14 https://random-status-code.herokuapp.com - online: false : 404 Not Found
+20/01/2022 01:12:14 https://www.alura.com.br - online: true
+20/01/2022 01:12:14 https://auroraalimentos.com.br - online: true
+20/01/2022 01:12:14 https://www.casadocodigo.com.br - online: true
+20/01/2022 01:12:20 https://random-status-code.herokuapp.com - online: true
+20/01/2022 01:12:20 https://www.alura.com.br - online: true
+20/01/2022 01:12:20 https://auroraalimentos.com.br - online: true
+20/01/2022 01:12:21 https://www.casadocodigo.com.br - online: true
+20/01/2022 01:12:26 https://random-status-code.herokuapp.com - online: true
+20/01/2022 01:12:26 https://www.alura.com.br - online: true
+20/01/2022 01:12:27 https://auroraalimentos.com.br - online: true
+20/01/2022 01:12:27 https://www.casadocodigo.com.br - online: true

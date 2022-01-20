@@ -4,9 +4,11 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -28,7 +30,7 @@ func main() {
 		case 1:
 			iniciarMonitoramento()
 		case 2:
-			fmt.Println("Exibindo logs..")
+			imprimeLosg()
 		case 0:
 			fmt.Println("Saindo do programa...")
 			os.Exit(0)
@@ -85,7 +87,10 @@ func testaSite(site string) {
 	}
 	if retorno.StatusCode == 200 {
 		fmt.Printf("Site %v Online \n", site)
+		registraLog(site, true, "")
 	} else {
+
+		registraLog(site, false, retorno.Status)
 		fmt.Printf("Site %v OffLine. Status code %v\n", site, retorno.Status)
 	}
 }
@@ -113,4 +118,34 @@ func leSitesDoArquivo() []string {
 	}
 	arquivo.Close()
 	return sites
+}
+func registraLog(site string, status bool, erro string) {
+
+	// open file da a opção de criar, escrever entre ourras.
+	arquivo, err := os.OpenFile("log.txt", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		arquivo.Close()
+		log.Fatal(err.Error())
+
+	}
+	// para formatar a data tem que consultar a biblioteca do GO, por que ele trabalha com formado diferente, colocando numeros que representam os campos.
+	linha := time.Now().Local().Format("02/01/2006 15:04:05") + " " + site + " - online: " + strconv.FormatBool(status)
+	if erro != "" {
+		linha = linha + " : " + erro
+	}
+	linha = linha + "\n"
+	arquivo.WriteString(linha)
+	arquivo.Close()
+}
+func imprimeLosg() {
+	fmt.Println("Exibindo logs..")
+	// na função de ioutil, já fecha o arquivo
+	// tambem le todo o arquivo,
+	//   faz o processo de abrir, ler o arquivo todo e fecha o arquivo.
+	arquivo, err := ioutil.ReadFile("log.txt")
+	if err != nil {
+
+		fmt.Println(err.Error())
+	}
+	fmt.Println(string(arquivo))
 }
