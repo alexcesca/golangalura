@@ -1,9 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -37,7 +41,7 @@ func main() {
 
 func exibeintroducao() {
 	nome := "Alex"
-	versao := 1.1
+	versao := 1.2
 
 	fmt.Println("Ola, Sr. ", nome)
 	fmt.Println("Este programa esta na versão ", versao)
@@ -61,7 +65,9 @@ func exibeMenu() {
 }
 func iniciarMonitoramento() {
 	fmt.Println("Monitorando ...")
-	sites := []string{"https://random-status-code.herokuapp.com", "https://www.alura.com.br", "https://auroraalimentos.com.br/"}
+	// função de slice informando os parametros.
+	//sites := []string{"https://random-status-code.herokuapp.com", "https://www.alura.com.br", "https://auroraalimentos.com.br/"}
+	sites := leSitesDoArquivo()
 	for i := 0; i < monitoramentos; i++ {
 		for _, site := range sites {
 			testaSite(site)
@@ -82,4 +88,29 @@ func testaSite(site string) {
 	} else {
 		fmt.Printf("Site %v OffLine. Status code %v\n", site, retorno.Status)
 	}
+}
+func leSitesDoArquivo() []string {
+	// Abrindo arquivo go
+	arquivo, err := os.Open("sites.txt")
+	if err != nil {
+		arquivo.Close()
+		log.Fatal(err.Error())
+	}
+	//a biblioteca ioutil restorna em um array de bites.
+	//arquivo, err := ioutil.ReadFile("sites.txt")
+	leitor := bufio.NewReader(arquivo)
+
+	var sites []string
+	for {
+		linha, err := leitor.ReadString('\n')
+		// a função TrimSpace remove os \n e espaços.
+		linha = strings.TrimSpace(linha)
+		sites = append(sites, linha)
+		//fmt.Println(linha)
+		if err == io.EOF {
+			break
+		}
+	}
+	arquivo.Close()
+	return sites
 }
